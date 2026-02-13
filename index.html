@@ -7,22 +7,22 @@
     <link rel="stylesheet" href="test.css">
 </head>
 <body>
-
+    <button id="btn-mute" onclick="toggleMute()">🔊</button>
     <header class="main-header">
         <h1 class="titulo-stranger">STRANGER<br><span>THINGS</span></h1>
     </header>
-
+    
+    
     <div id="quiz-container">
         
         <div id="menu-inicio">
             <p class="subtitulo">Selecciona un nivel para comenzar:</p>
-            <div id="menu-botones" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
-            </div>
+            <div id="menu-botones"></div>
         </div>
 
         <div id="pantalla-test" style="display: none;">
-            <div id="barra-progreso-fondo" style="background: #eee; height: 10px; border-radius: 5px; margin-bottom: 20px; overflow: hidden;">
-                <div id="barra-progreso-relleno" style="background: #3498db; height: 100%; width: 0%; transition: width 0.4s ease;"></div>
+            <div id="barra-progreso">
+                <div id="barra-progreso-relleno"></div>
             </div>
 
             <div id="pregunta-texto">Cargando pregunta...</div>
@@ -34,7 +34,7 @@
             </div>
         </div>
     </div>
-
+        <button id="btn-mute" onclick="toggleMute()">🔊</button>
     <footer class="main-footer">
         <p>Javascript, 2026 J.Geli</p>
     </footer>
@@ -48,6 +48,10 @@
             document.getElementById('pantalla-test').style.display = 'block';
         }
     </script>
-
+    <audio id="musica-fondo" loop>
+        <source src="./audio/musica_fondo.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+    </audio>
+    
 </body>
 </html>

@@ -54,13 +54,13 @@ export const datosTest = {
             q: "¿Cómo se llama el grupo de D&D al que pertenecen los protagonistas en el instituto?", 
             a: ["The Party", "The Lost Boys", "Hellfire Club"], 
             correcta: 2,
-            personaje: "logoimagen.png" 
+            personaje: "Eddie.png" 
         },
         { 
             q: "¿Qué objeto utiliza Vecna para marcar a sus víctimas antes de llevárselas?", 
             a: ["Un reloj de pared", "Una llave", "Un espejo roto"], 
             correcta: 0,
-            personaje: "Eddie.png" 
+            personaje: "eddie.png" 
         }
     ]
 };

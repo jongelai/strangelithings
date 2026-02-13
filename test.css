@@ -1,217 +1,248 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+/* =========================================
+   1. VARIABLES Y FUENTES
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Benguiat&family=Press+Start+2P&family=EB+Garamond:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
     --color-sangre: #e74c3c;
+    --color-sangre-oscura: #4a0000;
     --color-oscuro: #0a0a0a;
     --neon-glow: 0 0 10px #ff0000, 0 0 20px #5c0000;
+    --fuente-retro: 'Press Start 2P', cursive;
+    --fuente-serifa: 'EB Garamond', serif;
 }
 
+/* =========================================
+   2. ESTILOS BASE Y CUERPO
+   ========================================= */
 body {
     background-color: var(--color-oscuro);
     background-image: 
         radial-gradient(circle at center, #1a0505 0%, #000000 100%),
-        url('https://www.transparenttextures.com/patterns/stardust.png'); /* Polvillo flotando */
+        url('https://www.transparenttextures.com/patterns/stardust.png');
     color: #eeeeee;
     font-family: 'Courier New', Courier, monospace;
     margin: 0;
     overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: pulsoOscuro 10s infinite;
+}
+
+@keyframes pulsoOscuro {
+    0%, 100% { background-color: #0a0a0a; }
+    50% { background-color: #1a0505; }
 }
 
 #quiz-container {
-    border: 3px solid var(--color-sangre);
+    width: 90%;            /* Deja un 5% de aire a cada lado */
+    max-width: 500px;      /* Se mantiene igual para PC */
+    margin: 20px auto;     /* El 'auto' lo centra horizontalmente */
+    padding: 20px;
+    box-sizing: border-box; /* ¡CLAVE! Evita que el padding ensanche el recuadro */
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid var(--color-sangre);
     box-shadow: var(--neon-glow);
-    background: rgba(0, 0, 0, 0.85);
-    border-radius: 0; /* Estética ochentera, nada de bordes redondeados */
-    max-width: 700px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* =========================================
+   3. CABECERA Y TÍTULOS
+   ========================================= */
 .main-header h1 {
-    font-family: 'Press Start 2P', cursive;
+    font-family: var(--fuente-retro);
     color: var(--color-sangre);
-    text-shadow: 4px 4px 0px #4a0000;
+    text-shadow: 4px 4px 0px var(--color-sangre-oscura);
     font-size: 1.2rem;
-    letter-spacing: 2px;
+    text-align: center;
 }
 
-.opcion-btn {
-    background: #121212;
-    border: 2px solid #333;
-    color: #ccc;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.6rem;
-    margin-bottom: 12px;
-    transition: all 0.2s ease;
-    text-align: left;
-    padding: 15px;
-}
-
-.opcion-btn:hover {
-    border-color: var(--color-sangre);
-    color: white;
-    box-shadow: 0 0 10px var(--color-sangre);
-    transform: translateX(5px);
-}
-
-/* Efecto cuando fallas: se vuelve rojo oscuro */
-.incorrecto {
-    background-color: #5c0000 !important;
-    border-color: #ff0000 !important;
-    animation: flash 0.2s infinite;
-}
-
-@keyframes flash {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
-}
 .titulo-stranger {
+    font-family: var(--fuente-retro);
     line-height: 0.8;
     text-align: center;
     font-size: 2.5rem !important;
     filter: drop-shadow(0 0 5px red);
+    margin-bottom: 20px;
 }
+
 .titulo-stranger span {
     font-size: 1.8rem;
     letter-spacing: 10px;
 }
+
+/* =========================================
+   4. ELEMENTOS DEL JUEGO (Imagen y Pregunta)
+   ========================================= */
 #personaje-img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    border: 4px solid #e74c3c;
+    border: 4px solid var(--color-sangre);
     box-shadow: 0 0 15px #ff0000;
     margin: 0 auto 20px;
     display: block;
     object-fit: cover;
 }
-/* 1. Importamos las fuentes de Google */
-@import url('https://fonts.googleapis.com/css2?family=Benguiat&family=Press+Start+2P&family=EB+Garamond:ital,wght@0,400;0,700;1,400&display=swap');
 
-/* 2. Estilo para el texto de la PREGUNTA (Más cinematográfico) */
 #pregunta-texto {
-    font-family: 'EB Garamond', serif;
+    font-family: var(--fuente-serifa);
     font-size: 1.8rem;
     line-height: 1.2;
     color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(231, 76, 60, 0.3);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     margin-bottom: 30px;
     font-weight: 700;
     font-style: italic;
-    letter-spacing: 0.5px;
+    text-align: center;
 }
 
-/* 3. Estilo para el MARCADOR (Aciertos y Progreso - Estilo Arcade) */
-#progreso, #puntos {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.65rem;
-    color: #e74c3c;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 15px;
-    display: inline-block;
-    padding: 5px 10px;
-    background: rgba(255, 0, 0, 0.05);
-    border: 1px solid rgba(231, 76, 60, 0.2);
+/* =========================================
+   5. BARRA DE PROGRESO (EFECTO SANGRE)
+   ========================================= */
+#barra-progreso {
+    width: 100%;
+    height: 14px;
+    background-color: #050000;
+    border: 1px solid var(--color-sangre-oscura);
+    box-shadow: inset 0 0 10px #000;
+    margin: 20px 0;
+    overflow: hidden;
 }
 
-/* 4. Estilo para los BOTONES de respuesta */
+#barra-progreso-relleno {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #2b0000 0%, #8b0000 70%, #ff0000 100%);
+    box-shadow: 0 0 15px #ff0000;
+    transition: width 0.6s ease-in-out;
+    position: relative;
+    animation: pulsoSangre 2s infinite alternate;
+}
+
+@keyframes pulsoSangre {
+    from { filter: brightness(0.8); }
+    to { filter: brightness(1.2); }
+}
+
+/* =========================================
+   6. BOTONES DE OPCIONES
+   ========================================= */
 .opcion-btn {
-    font-family: 'Press Start 2P', cursive;
+    width: 100%;
+    font-family: var(--fuente-retro);
     font-size: 0.7rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
     color: #ffffff;
     background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
     border: 1px solid #444;
     padding: 18px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+    transition: all 0.3s ease;
+    text-align: left;
 }
 
 .opcion-btn:hover {
     color: #ff0000;
-    border-color: #e74c3c;
+    border-color: var(--color-sangre);
     box-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
-    transform: scale(1.02);
+    transform: translateX(5px);
 }
 
-/* 5. El efecto de agrandar la correcta cuando fallas */
-.resaltar-correcta {
-    transform: scale(1.1);
-    z-index: 5;
-    box-shadow: 0 0 30px #2ecc71 !important;
+.correcto {
+    background: #1a4a1a !important;
     border-color: #2ecc71 !important;
-    font-weight: bold;
+    box-shadow: 0 0 20px #27ae60 !important;
 }
-/* --- AJUSTES PARA MÓVIL (Pantallas de menos de 600px) --- */
-@media (max-width: 600px) {
-    .titulo-stranger {
-        font-size: 1.4rem !important; /* Reducimos el tamaño para que quepa */
-        line-height: 1.2 !important;  /* Aumentamos el espacio entre líneas para que no se superpongan */
-        letter-spacing: 1px !important;
-        margin-top: 10px;
-    }
 
-    .titulo-stranger span {
-        font-size: 1rem !important;   /* El subtítulo más pequeño */
-        letter-spacing: 4px !important;
-    }
-
-    /* Ajuste para que los botones de respuesta no se vean tan apretados */
-    .opcion-btn {
-        font-size: 0.55rem !important; 
-        padding: 12px !important;
-    }
-
-    /* Reducimos un poco el tamaño de la imagen del personaje en móvil */
-    #personaje-img {
-        width: 120px;
-        height: 120px;
-    }
-
-    /* Ajuste para el texto de la pregunta */
-    #pregunta-texto {
-        font-size: 1.3rem !important;
-    }
+.incorrecto {
+    background-color: var(--color-sangre-oscura) !important;
+    border-color: #ff0000 !important;
+    animation: flash 0.2s infinite;
 }
-/* Estilo para la imagen de portada/final sin marco */
-.img-portada {
+
+.resaltar-correcta {
+    transform: scale(1.05);
+    border-color: #2ecc71 !important;
+}
+
+@keyframes flash {
+    50% { opacity: 0.7; }
+}
+.subtitulo {
+    text-align: center;
     width: 100%;
-    max-width: 500px;
-    margin: 20px auto;
-    display: block;
-    border: none;         /* Quitamos el borde rojo */
-    box-shadow: none;     /* Quitamos el brillo rojo */
-    border-radius: 5px;   /* Un suavizado mínimo en las esquinas */
-    filter: brightness(0.9) contrast(1.1); /* Mantenemos un poco de contraste ochentero */
+    margin-bottom: 20px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    padding: 0 10px;       /* Margen interno extra para el texto */
+    box-sizing: border-box;
 }
+/* =========================================
+   7. PANTALLA FINAL Y RESULTADOS
+   ========================================= */
 .resultado-final-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: 100%;
-}
-/* Imagen final ajustada (más pequeña y centrada) */
-.img-portada-fin {
-    width: 80%;           /* Bajamos del 100% al 80% */
-    max-width: 350px;     /* Tamaño máximo controlado */
-    height: auto;
-    margin: 10px auto 20px;
-    display: block;
-    border: none;
-    box-shadow: none;
-    border-radius: 8px;
 }
 
-/* Forzar centrado en textos de puntuación */
-.resultado-final-container h2, 
-.resultado-final-container p {
-    margin-left: auto;
-    margin-right: auto;
+.img-portada-fin {
+    width: 60%;
+    max-width: 280px;
+    margin-bottom: 20px;
+}
+.img-portada {
+    width: 100%;           /* Se adapta al ancho del contenedor */
+    height: auto;          /* Mantiene la proporción */
+    max-width: 400px;      /* Para que no sea gigantesca */
+    margin-bottom: 20px;
     display: block;
-    width: 100%;
+}
+#progreso, #puntos {
+    font-family: var(--fuente-retro);
+    font-size: 0.6rem;
+    color: var(--color-sangre);
+    padding: 8px;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+/* =========================================
+   8. MEDIA QUERIES (MÓVIL)
+   ========================================= */
+@media (max-width: 600px) {
+    .titulo-stranger { font-size: 1.4rem !important; line-height: 1.2; }
+    .titulo-stranger span { font-size: 1rem !important; letter-spacing: 4px; }
+    #pregunta-texto { font-size: 1.3rem !important; }
+    .opcion-btn { font-size: 0.55rem !important; padding: 12px; }
+}
+#btn-mute {
+    position: fixed;        /* Se ancla a la pantalla, no al contenido */
+    bottom: 20px;           /* Separación del borde inferior */
+    right: 20px;            /* Separación del borde derecho */
+    z-index: 10000;         /* Siempre por encima de todo */
+    background: none;       /* Quitamos el fondo feo */
+    border: none;           /* Sin bordes cuadrados */
+    font-size: 1.8rem;      /* Tamaño cómodo para el dedo */
+    cursor: pointer;
+    filter: drop-shadow(0 0 8px var(--color-sangre)); /* Brillo de neón */
+    transition: transform 0.2s ease;
+    padding: 0;
+}
+
+#btn-mute:hover {
+    transform: scale(1.2);  /* Feedback visual al tocarlo */
+}
+
+/* Si prefieres que esté arriba a la derecha, cambia 'bottom: 20px' por 'top: 20px' */
+
+#btn-mute:hover {
+    box-shadow: var(--neon-glow);
+    transform: scale(1.1);
 }

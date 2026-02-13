@@ -1,43 +1,74 @@
 let indice = 0;
 let aciertos = 0;
 let bancoPreguntas = [];
-let musicaFondo = null; // Para controlar el audio
 
+// Elementos del DOM
 const txtTitulo = document.querySelector(".main-header h1");
 const txtPregunta = document.getElementById("pregunta-texto");
 const contenedorOpciones = document.getElementById("opciones-container");
 const barraRelleno = document.getElementById("barra-progreso-relleno");
 const txtProgreso = document.getElementById("progreso");
 const txtPuntos = document.getElementById("puntos");
+const audioFondo = document.getElementById("musica-fondo");
 
-// Crear el elemento de imagen para los personajes (Dustin, Eleven, etc.)
+// Configuración inicial de audio
+if (audioFondo) {
+    audioFondo.volume = 0.15;
+}
+
+// Imagen de personaje
 const imgPersonaje = document.createElement("img");
 imgPersonaje.id = "personaje-img";
-imgPersonaje.style.display = "none"; // Oculto hasta que haya una imagen
+imgPersonaje.style.display = "none";
 
 const urlParams = new URLSearchParams(window.location.search);
-const nombreTest = urlParams.get('test'); 
+const nombreTest = urlParams.get('test');
 
-// --- Lógica para cargar Test o generar Menú ---
+/* =========================================
+   LÓGICA DE AUDIO (Móvil y PC)
+   ========================================= */
+
+// Función GLOBAL para el botón de Mute (para que el HTML la vea)
+window.toggleMute = function() {
+    const btn = document.getElementById("btn-mute");
+    if (!audioFondo || !btn) return;
+
+    if (audioFondo.muted) {
+        audioFondo.muted = false;
+        btn.innerText = "🔊";
+        btn.style.opacity = "1";
+    } else {
+        audioFondo.muted = true;
+        btn.innerText = "🔇";
+        btn.style.opacity = "0.5";
+    }
+};
+
+function arrancarMusica() {
+    if (audioFondo) {
+        audioFondo.play().catch(err => console.log("Esperando interacción..."));
+    }
+    // Quitamos los listeners para que no intente activarse en cada clic
+    document.removeEventListener('click', arrancarMusica);
+    document.removeEventListener('touchstart', arrancarMusica);
+}
+
+// Escuchamos el primer toque en cualquier sitio para activar el sonido
+document.addEventListener('click', arrancarMusica);
+document.addEventListener('touchstart', arrancarMusica);
+
+/* =========================================
+   INICIO DEL JUEGO / MENÚ
+   ========================================= */
 if (nombreTest) {
     import(`./data/${nombreTest}.js`)
         .then(modulo => {
-            txtTitulo.innerHTML = modulo.datosTest.titulo;
+            if (txtTitulo) txtTitulo.innerHTML = modulo.datosTest.titulo;
             bancoPreguntas = modulo.datosTest.preguntas;
-
-            // Iniciar música si el test tiene el campo 'musica'
-            if (modulo.datosTest.musica) {
-                musicaFondo = new Audio(modulo.datosTest.musica);
-                musicaFondo.loop = true;
-                musicaFondo.volume = 0.4;
-                // El navegador bloquea audio automático, se activará al primer clic
-                document.addEventListener('click', () => musicaFondo.play(), { once: true });
-            }
-
             cargarPregunta();
         })
         .catch(err => {
-            txtPregunta.innerText = "Error al cargar el test.";
+            if (txtPregunta) txtPregunta.innerText = "Error al cargar el test.";
             console.error(err);
         });
 } else {
@@ -65,12 +96,16 @@ async function generarMenu() {
             btn.onclick = () => window.location.href = `index.html?test=${nombre}`;
             contenedorMenu.appendChild(btn);
         } catch (error) {
-            console.error("No se pudo cargar el título de:", nombre);
+            console.error("Error cargando:", nombre);
         }
     }
 }
 
+/* =========================================
+   FLUJO DEL TEST
+   ========================================= */
 function cargarPregunta() {
+    if (!contenedorOpciones) return;
     contenedorOpciones.innerHTML = "";
     
     if (indice >= bancoPreguntas.length) {
@@ -81,11 +116,9 @@ function cargarPregunta() {
     const p = bancoPreguntas[indice];
     txtPregunta.innerText = p.q;
     
-    // --- LÓGICA DE IMAGEN DE PERSONAJE ---
     if (p.personaje) {
         imgPersonaje.src = `./img/${p.personaje}`;
         imgPersonaje.style.display = "block";
-        imgPersonaje.className = "img-personaje-estilo"; // Asegúrate de darle estilo en CSS
         txtPregunta.before(imgPersonaje);
     } else {
         imgPersonaje.style.display = "none";
@@ -111,18 +144,15 @@ function validar(seleccion, evento) {
     botones.forEach(btn => btn.style.pointerEvents = "none");
 
     const esCorrecta = (seleccion === pActual.correcta);
-    let tiempoEspera = 1000;
+    let tiempoEspera = 1200;
 
     if (esCorrecta) {
         aciertos++;
         evento.target.classList.add("correcto");
     } else {
-        tiempoEspera = 2500; // Un poco más de tiempo para ver la correcta agrandada
+        tiempoEspera = 2500;
         evento.target.classList.add("incorrecto");
-        
-        // Buscamos la correcta para agrandarla
-        const botonCorrecto = botones[pActual.correcta];
-        botonCorrecto.classList.add("correcto", "resaltar-correcta");
+        botones[pActual.correcta].classList.add("correcto", "resaltar-correcta");
     }
 
     if (txtPuntos) txtPuntos.innerText = `Aciertos: ${aciertos}`;
@@ -138,26 +168,37 @@ function mostrarResultadoFinal() {
     const nota = (aciertos / bancoPreguntas.length) * 10;
     
     imgPersonaje.style.display = "none";
-    txtPregunta.innerText = "¡Has sobrevivido al Upside Down!";
     
-    // Envolvemos todo en el nuevo contenedor para centrar
+    let mensajeFinal = "";
+    let colorNota = "#e74c3c"; 
+
+    if (nota < 5) {
+        mensajeFinal = "¡Vuelve a ver la serie! Ni siquiera Eleven podría salvarte con esa puntuación. Estás atrapado en el Upside Down.";
+        txtPregunta.innerText = "¡PERDISTE!";
+        if (audioFondo) audioFondo.volume = 0.05;
+    } else if (nota < 9) {
+        mensajeFinal = "¡No está mal! Has sobrevivido, pero te falta mucho para ser un experto en Hawkins.";
+        txtPregunta.innerText = "¡SOBREVIVISTE!";
+        colorNota = "#f1c40f"; 
+    } else {
+        mensajeFinal = "¡Increíble! Eres un auténtico miembro de The Party. Hopper estaría orgulloso.";
+        txtPregunta.innerText = "¡MAESTRO DE HAWKINS!";
+        colorNota = "#2ecc71";
+    }
+
     contenedorOpciones.innerHTML = `
         <div class="resultado-final-container">
             <img src="./img/logoimagenfin.png" class="img-portada-fin">
-            
-            <h2 style="font-size: 3.5rem; color: #e74c3c; text-shadow: 0 0 15px red; margin: 10px 0;">
+            <h2 style="font-size: 4rem; color: ${colorNota}; text-shadow: 0 0 15px ${colorNota}; margin: 10px 0;">
                 ${nota.toFixed(1)}
             </h2>
-            
-            <p style="font-family: 'Press Start 2P'; font-size: 0.8rem; margin-bottom: 25px; color: #eee;">
-                Tu puntuación final
+            <p style="font-family: 'Press Start 2P'; font-size: 0.7rem; color: #fff; margin-bottom: 20px; padding: 0 20px; line-height: 1.6;">
+                ${mensajeFinal}
             </p>
-            
-            <button onclick="location.reload()" class="opcion-btn" style="width: 200px; background:#e74c3c; color:white;">
+            <button onclick="location.reload()" class="opcion-btn" style="width: 220px; background:#e74c3c; color:white; text-align:center; margin: 0 auto;">
                 REINTENTAR
             </button>
-            
-            <button onclick="window.location.href='index.html'" class="opcion-btn" style="width: 200px; margin-top: 10px;">
+            <button onclick="window.location.href='index.html'" class="opcion-btn" style="width: 220px; margin: 10px auto; text-align:center;">
                 VOLVER AL MENÚ
             </button>
         </div>
