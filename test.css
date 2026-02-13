@@ -1,0 +1,191 @@
+/* --- VARIABLES Y CONFIGURACIÓN --- */
+:root {
+    --color-primario: #2c3e50;
+    --color-acento: #3498db;
+    --color-exito: #2ecc71;
+    --color-error: #e74c3c;
+    --bg: #f4f7f6;
+    --blanco: #ffffff;
+}
+
+/* --- ESTILOS BASE --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* --- CABECERA Y PIE --- */
+.main-header h1 {
+    color: var(--color-primario);
+    font-size: 2rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    margin: 0;
+    text-align: center;
+}
+
+.main-footer {
+    margin-top: 10px;
+    color: #95a5a6;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* --- CONTENEDOR DEL TEST --- */
+#quiz-container {
+    background: var(--blanco);
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-top: 8px solid var(--color-primario);
+    box-sizing: border-box;
+}
+
+#pregunta-texto {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-primario);
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+/* --- BOTONES DE OPCIONES --- */
+.opcion-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 12px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--blanco);
+    transition: all 0.3s ease;
+    text-align: left;
+    font-size: 1rem;
+    color: #333;
+}
+
+.opcion-btn:hover {
+    border-color: var(--color-acento);
+    background-color: #f0f7ff;
+    transform: translateY(-2px);
+}
+
+.opcion-btn:active {
+    transform: scale(0.98);
+}
+
+/* --- ESTADOS DE ACIERTO Y FALLO (Prioridad Máxima) --- */
+/* Usamos selectores combinados para ganarle al :hover */
+
+.opcion-btn.correcto, 
+.opcion-btn.correcto:hover {
+    background-color: var(--color-exito) !important;
+    color: white !important;
+    border-color: #27ae60 !important;
+    font-weight: bold;
+}
+
+.opcion-btn.incorrecto, 
+.opcion-btn.incorrecto:hover {
+    background-color: var(--color-error) !important;
+    color: white !important;
+    border-color: #c0392b !important;
+    font-weight: bold;
+}
+
+/* --- BARRA DE PROGRESO Y MARCADOR --- */
+#barra-progreso-fondo {
+    background: #eee;
+    height: 12px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+#barra-progreso-relleno {
+    background: var(--color-acento);
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#marcador {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+#puntos {
+    font-weight: bold;
+    color: var(--color-primario);
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 480px) {
+    #quiz-container {
+        padding: 20px;
+    }
+    
+    .main-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    #pregunta-texto {
+        font-size: 1.1rem;
+    }
+}
+/* Efecto de pulso para la respuesta correcta */
+.efecto-acierto {
+    animation: pulso-acierto 0.5s ease;
+}
+
+@keyframes pulso-acierto {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); filter: brightness(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Opcional: un toque de vibración para la incorrecta */
+.incorrecto {
+    animation: vibrar 0.3s linear;
+}
+
+@keyframes vibrar {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+/* Efecto para agrandar la respuesta correcta al fallar */
+.resaltar-correcta {
+    transform: scale(1.10);
+    /*Aumentaeltamañoun15%*/z-index: 10;
+    /*Aseguraqueseveaporencimadelosdemás*/box-shadow: 0 0 20px rgba(46, 204, 113, 0.6);
+    /*Brilloverdesuave*/transition: transform 0.3s ease;
+    /*Animaciónsuave*/font-weight: bold;
+    -webkit-transform: scale(1.10);
+    -moz-transform: scale(1.10);
+    -ms-transform: scale(1.10);
+    -o-transform: scale(1.10);
+}
+
+/* Efecto opcional para que la respuesta que el usuario marcó mal se vea más pequeña */
+.incorrecto {
+    transform: scale(0.95);
+    opacity: 0.8;
+}
