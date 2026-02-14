@@ -29,7 +29,7 @@ export const datosTest = {
             q: "¿Qué canción cantan Dustin y Suzie por radio en un momento crítico?",
             a: ["Should I Stay or Should I Go", "Never Ending Story", "Every Breath You Take", "Africa"],
             correcta: 1,
-            personaje: "dustin.png" 
+            personaje: "dragon.png" 
         },
         {
             q: "¿A qué objeto le tiene miedo Erica antes de entrar en los conductos?",
