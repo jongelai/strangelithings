@@ -47,7 +47,7 @@ export const datosTest = {
             q: "¿Qué objeto utiliza Dustin para explicar el concepto de las dimensiones?", 
             a: ["Una brújula", "Una caja de pizza", "Un walkie-talkie"], 
             correcta: 0,
-            personaje: "dustin_2.png" 
+            personaje: "dustin.png" 
         }
     ]
 };
