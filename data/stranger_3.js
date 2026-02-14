@@ -20,10 +20,10 @@ export const datosTest = {
             personaje: "hopper.png"
         },
         {
-            q: "¿Cómo se llama el grupo de amigos (The Party) en el transmisor de Dustin?",
-            a: ["Club Fuego Infernal", "Cerebro", "La Manada", "The Goldbergs"],
-            correcta: 1,
-            personaje: "dustin.png"
+            q: "¿A qué lugar lleva Max a Eleven para demostrarle que hay más en la vida que los chicos?",
+            a: ["Al cine", "Al salón recreativo (Arcade)", "Al centro comercial Starcourt", "A la piscina municipal"],
+            correcta: 2,
+            personaje: "max.png"
         },
         {
             q: "¿Qué canción cantan Dustin y Suzie por radio en un momento crítico?",
