@@ -144,13 +144,13 @@ function validar(seleccion, evento) {
     botones.forEach(btn => btn.style.pointerEvents = "none");
 
     const esCorrecta = (seleccion === pActual.correcta);
-    let tiempoEspera = 1200;
+    let tiempoEspera = 500;
 
     if (esCorrecta) {
         aciertos++;
         evento.target.classList.add("correcto");
     } else {
-        tiempoEspera = 2500;
+        tiempoEspera = 2000;
         evento.target.classList.add("incorrecto");
         botones[pActual.correcta].classList.add("correcto", "resaltar-correcta");
     }

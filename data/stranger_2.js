@@ -27,7 +27,7 @@ export const datosTest = {
             personaje: "will.png" 
         },
         { 
-            q: "¿Qué número tiene tatuado el 'hermano' de Eleven que aparece en la temporada 2?", 
+            q: "¿Qué número tiene tatuado la 'hermana' de Eleven que aparece en la temporada 2?", 
             a: ["001", "008", "010"], 
             correcta: 1,
             personaje: "eleven.png" 
@@ -54,7 +54,7 @@ export const datosTest = {
             q: "¿Cómo se llama el grupo de D&D al que pertenecen los protagonistas en el instituto?", 
             a: ["The Party", "The Lost Boys", "Hellfire Club"], 
             correcta: 2,
-            personaje: "Eddie.png" 
+            personaje: "eddie.png" 
         },
         { 
             q: "¿Qué objeto utiliza Vecna para marcar a sus víctimas antes de llevárselas?", 
